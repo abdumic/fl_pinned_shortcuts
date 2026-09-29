@@ -10,7 +10,7 @@
 It supports Flutter assets and network images, passes custom `extraData` when a shortcut is opened, handles both cold-start and warm-start clicks, checks shortcut support/pin state, and supports updating or disabling shortcuts.
 | Screenshot 1 | Screenshot 2 | Screenshot 3 |
 |--------------|--------------|--------------|
-| ![Screenshot 1](https://github.com/abdumic/fl_pinned_shortcuts/blob/main/fl_pinned_shortcuts/Screenshot%202026-09-29%20145715.png) | ![Screenshot 2](https://github.com/abdumic/fl_pinned_shortcuts/blob/main/fl_pinned_shortcuts/Screenshot%202026-09-29%20145703.png) | ![Screenshot 3](https://github.com/abdumic/fl_pinned_shortcuts/blob/main/fl_pinned_shortcuts/Screenshot%202026-09-29%20145451.png) |
+| ![Screenshot 1](https://github.com/abdumic/fl_pinned_shortcuts/blob/main/fl_pinned_shortcuts/Screenshot%202026-09-29%20145703.png) | ![Screenshot 2](https://github.com/abdumic/fl_pinned_shortcuts/blob/main/fl_pinned_shortcuts/Screenshot%202026-09-29%20145715.png) | ![Screenshot 3](https://github.com/abdumic/fl_pinned_shortcuts/blob/main/fl_pinned_shortcuts/Screenshot%202026-09-29%20145451.png) |
 
 
 Network images are resolved through `flutter_cache_manager`, allowing the plugin to reuse the default cache used by `cached_network_image` when the same URL is already cached.
