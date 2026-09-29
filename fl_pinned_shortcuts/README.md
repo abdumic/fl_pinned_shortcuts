@@ -140,17 +140,17 @@ The result depends on both the Android version and the current default launcher.
 
 ## Create a shortcut with one image
 
-For most apps, especially when the image is a **reciter photo or other artwork**, use a single image:
+For most apps, especially when the image is a **shortcut photo or other artwork**, use a single image:
 
 ```dart
 await FlutterPinnedShortcuts.createPinnedShortcut(
-  id: 'reciter_1',
-  label: 'Mishary Alafasy',
-  imageSource: 'assets/reciters/mishary.png',
+  id: 'shortcut_1',
+  label: 'Asset Sample',
+  imageSource: 'assets/images/sample.png',
   imageSourceType: ImageSourceType.asset,
-  longLabel: 'Listen to Mishary Alafasy',
+  longLabel: 'See Bookmarks',
   extraData: const {
-    'reciterId': '1',
+    'shortcutId': '1',
   },
 );
 ```
@@ -169,13 +169,13 @@ If you need precise adaptive foreground/background composition, use the advanced
 
 ```dart
 await FlutterPinnedShortcuts.createPinnedShortcut(
-  id: 'reciter_1',
-  label: 'Mishary Alafasy',
-  imageSource: 'https://example.com/reciters/mishary.png',
+  id: 'shortcut_2',
+  label: 'Network Sample',
+  imageSource: 'https://example.com/images/fire.png',
   imageSourceType: ImageSourceType.network,
-  longLabel: 'Listen to Mishary Alafasy',
+  longLabel: 'See History',
   extraData: const {
-    'reciterId': '1',
+    'shortcutId': '1',
   },
 );
 ```
@@ -190,11 +190,11 @@ DefaultCacheManager().getSingleFile(url)
 
 This is intentional. `cached_network_image` uses `flutter_cache_manager` for its default network image cache. When both your app and `fl_pinned_shortcuts` use the default cache manager, the plugin can reuse a file that has already been cached for the same URL instead of downloading it again.
 
-For example, if your app already displays a reciter image with:
+For example, if your app already displays a shortcut image with:
 
 ```dart
 CachedNetworkImage(
-  imageUrl: reciter.imageUrl,
+  imageUrl: 'https://example.com/images/fire.png',
 )
 ```
 
@@ -202,9 +202,9 @@ the shortcut can use the same URL:
 
 ```dart
 await FlutterPinnedShortcuts.createPinnedShortcut(
-  id: 'reciter_1',
-  label: reciter.name,
-  imageSource: reciter.imageUrl,
+  id: 'sample_1',
+  label: 'Shortcut 1',
+  imageSource: 'https://example.com/images/fire.png',
   imageSourceType: ImageSourceType.network,
 );
 ```
@@ -264,7 +264,7 @@ When using `ImageSourceType.asset`, the image must be available to the host appl
 ```yaml
 flutter:
   assets:
-    - assets/reciters/mishary.png
+    - assets/images/sample.png
     - assets/icon.png
 ```
 
@@ -276,9 +276,9 @@ The click stream emits a map with this structure:
 
 ```dart
 {
-  'id': 'reciter_1',
+  'id': 'shortcut1_1',
   'extraData': {
-    'reciterId': '1',
+    'shortcutId': '1',
   },
 }
 ```
@@ -291,12 +291,12 @@ FlutterPinnedShortcuts.onShortcutClick.listen((resultData) {
   final extraData = resultData['extraData'] as Map?;
 
   switch (id) {
-    case 'reciter_1':
-      // Navigate to the reciter page.
+    case 'shortcut_1':
+      // Navigate to the shortcut page.
       break;
 
-    case 'radio':
-      // Navigate to Quran Radio.
+    case 'bookmark':
+      // Navigate to Bookmark Page.
       break;
   }
 
@@ -312,17 +312,17 @@ The plugin handles both:
 
 ## Pass extra data
 
-`extraData` is useful for opening a specific feature, reciter, page, or item:
+`extraData` is useful for opening a specific feature, shortcut, page, or item:
 
 ```dart
 await FlutterPinnedShortcuts.createPinnedShortcut(
-  id: 'reciter_23',
-  label: 'Abdul Basit',
-  imageSource: reciter.imageUrl,
+  id: 'shortcut_23',
+  label: 'Settings',
+  imageSource: shortcut.imageUrl,
   imageSourceType: ImageSourceType.network,
   extraData: const {
-    'type': 'reciter',
-    'reciterId': '23',
+    'type': 'shortcut',
+    'shortcutId': '23',
   },
 );
 ```
@@ -341,7 +341,7 @@ Do not place secrets, tokens, passwords, or private information in `extraData`. 
 ## Check whether a shortcut is pinned
 
 ```dart
-final isPinned = await FlutterPinnedShortcuts.isPinned('reciter_23');
+final isPinned = await FlutterPinnedShortcuts.isPinned('shortcut_23');
 
 if (isPinned) {
   debugPrint('Shortcut is pinned.');
@@ -354,14 +354,14 @@ Pinned shortcuts can be updated using the same ID:
 
 ```dart
 await FlutterPinnedShortcuts.updatePinnedShortcut(
-  id: 'reciter_23',
-  label: 'Abdul Basit',
-  imageSource: updatedReciterImageUrl,
+  id: 'shortcut_23',
+  label: 'Settings Page',
+  imageSource: updatedshortcutImageUrl,
   imageSourceType: ImageSourceType.network,
-  longLabel: 'Listen to Abdul Basit',
+  longLabel: 'Navigate to Settings Page',
   extraData: const {
-    'type': 'reciter',
-    'reciterId': '23',
+    'type': 'shortcut',
+    'shortcutId': '23',
   },
 );
 ```
@@ -374,15 +374,15 @@ You can disable a shortcut without removing it from the launcher:
 
 ```dart
 await FlutterPinnedShortcuts.disablePinnedShortcut(
-  'reciter_23',
-  disabledMessage: 'This reciter is currently unavailable.',
+  'shortcut_23',
+  disabledMessage: 'This shortcut is currently unavailable.',
 );
 ```
 
 Re-enable it later:
 
 ```dart
-await FlutterPinnedShortcuts.enablePinnedShortcut('reciter_23');
+await FlutterPinnedShortcuts.enablePinnedShortcut('shortcut_23');
 ```
 
 ## Removing a pinned shortcut
@@ -393,7 +393,7 @@ For that reason:
 
 ```dart
 final removed =
-    await FlutterPinnedShortcuts.removePinnedShortcut('reciter_23');
+    await FlutterPinnedShortcuts.removePinnedShortcut('shortcut_23');
 ```
 
 may return `false` on modern Android. The user can remove the pinned shortcut from their launcher.
@@ -450,16 +450,16 @@ class _MyAppState extends State<MyApp> {
     setState(() => _supported = supported);
   }
 
-  Future<void> _pinReciter() async {
+  Future<void> _pinshortcut() async {
     await FlutterPinnedShortcuts.createPinnedShortcut(
-      id: 'reciter_1',
+      id: 'shortcut_1',
       label: 'Mishary Alafasy',
-      imageSource: 'assets/reciters/mishary.png',
+      imageSource: 'assets/shortcuts/mishary.png',
       imageSourceType: ImageSourceType.asset,
       longLabel: 'Listen to Mishary Alafasy',
       extraData: const {
-        'type': 'reciter',
-        'reciterId': '1',
+        'type': 'shortcut',
+        'shortcutId': '1',
       },
     );
   }
@@ -480,9 +480,9 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Center(
           child: FilledButton.icon(
-            onPressed: _supported ? _pinReciter : null,
+            onPressed: _supported ? _pinshortcut : null,
             icon: const Icon(Icons.push_pin_outlined),
-            label: const Text('Pin reciter'),
+            label: const Text('Pin shortcut'),
           ),
         ),
       ),
@@ -543,7 +543,7 @@ Applications cannot silently remove shortcuts that the user pinned. This is an A
 - Network shortcut icons are resolved asynchronously before the Android pin request is sent.
 - Large images are decoded and scaled natively to limit memory usage.
 - Reusing the default cache manager can avoid downloading the same network image more than once.
-- For frequently changing remote images, update the pinned shortcut when your app refreshes its reciter artwork.
+- For frequently changing remote images, update the pinned shortcut when your app refreshes its shortcut artwork.
 
 ## API reference
 
