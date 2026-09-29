@@ -1,0 +1,23 @@
+name: fl_pinned_shortcuts_example
+description: Example app for fl_pinned_shortcuts.
+publish_to: none
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+  flutter: '>=3.22.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  fl_pinned_shortcuts:
+    path: ..
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/shortcut.png
