@@ -11,6 +11,9 @@ It supports Flutter assets and network images, passes custom `extraData` when a 
 
 Network images are resolved through `flutter_cache_manager`, allowing the plugin to reuse the default cache used by `cached_network_image` when the same URL is already cached.
 
+|--------------|--------------|--------------|
+| ![Screenshot 1](https://github.com/abdumic/fl_pinned_shortcuts/blob/main/fl_pinned_shortcuts/Screenshot%202026-09-29%20145715.png) | ![Screenshot 2](https://github.com/abdumic/fl_pinned_shortcuts/blob/main/fl_pinned_shortcuts/Screenshot%202026-09-29%20145703.png) | ![Screenshot 3](https://github.com/abdumic/fl_pinned_shortcuts/blob/main/fl_pinned_shortcuts/Screenshot%202026-09-29%20145451.png) |
+
 ## Features
 
 - Check whether the current Android launcher supports pinned shortcuts.
