@@ -11,8 +11,6 @@ It supports Flutter assets and network images, passes custom `extraData` when a 
 
 Network images are resolved through `flutter_cache_manager`, allowing the plugin to reuse the default cache used by `cached_network_image` when the same URL is already cached.
 
-| ![Screenshot 1](https://github.com/abdumic/fl_pinned_shortcuts/blob/main/Screenshot%202026-09-29%20145703.png) | ![Screenshot 2](https://github.com/abdumic/fl_pinned_shortcuts/blob/main/Screenshot%202026-09-29%20145715.png) | ![Screenshot 3](https://github.com/abdumic/fl_pinned_shortcuts/blob/main/Screenshot%202026-09-29%20145451.png) |
-
 ## Features
 
 - Check whether the current Android launcher supports pinned shortcuts.
@@ -648,6 +646,23 @@ When reporting an Android shortcut issue, include:
 - plugin version
 - whether the app was running or terminated when the shortcut was tapped
 
+### Offline network images
+
+Network shortcut images check `DefaultCacheManager`'s disk cache first. An
+already-cached image can therefore be used even when the device is offline.
+If an image has never been persisted to disk, the package falls back to
+`getSingleFile()` and requires a network connection.
+
+You can explicitly prepare an image while online:
+
+```dart
+final path = await FlutterPinnedShortcuts.cacheNetworkImage(imageUrl);
+
+final cached = await FlutterPinnedShortcuts.isImageCached(imageUrl);
+```
+
 ## License
 
 This package is released under the [MIT License](LICENSE).
+
+

@@ -302,6 +302,50 @@ class FlutterPinnedShortcuts {
     }
   }
 
+  /// Returns whether [url] is currently available in the shared disk cache.
+  ///
+  /// This method is cache-only: it never performs a network request. A
+  /// cached entry may still be returned even when its cache-manager policy
+  /// considers the entry stale, which is useful when the device is offline
+  /// and an existing image is still perfectly usable for a shortcut icon.
+  static Future<bool> isImageCached(String url) async {
+    _validateString(url, 'url');
+
+    if (!_isAndroid) return false;
+
+    try {
+      final cached = await DefaultCacheManager().getFileFromCache(url);
+      return cached?.file.existsSync() ?? false;
+    } on Exception {
+      return false;
+    }
+  }
+
+  /// Ensures [url] is available in the shared disk cache.
+  ///
+  /// Returns the cached file when one exists, otherwise downloads and caches
+  /// the image using [DefaultCacheManager]. This is useful for apps that want
+  /// to prepare shortcut images while the device is online so they can later
+  /// create shortcuts while offline.
+  static Future<String?> cacheNetworkImage(String url) async {
+    _validateString(url, 'url');
+
+    if (!_isAndroid) return null;
+
+    try {
+      final cacheManager = DefaultCacheManager();
+      final cached = await cacheManager.getFileFromCache(url);
+      if (cached != null && cached.file.existsSync()) {
+        return cached.file.path;
+      }
+
+      final file = await cacheManager.getSingleFile(url);
+      return file.path;
+    } on Exception {
+      return null;
+    }
+  }
+
   /// Returns true when Android currently reports the [id] as pinned.
   static Future<bool> isPinned(String id) async {
     _validateString(id, 'id');
@@ -432,7 +476,18 @@ class FlutterPinnedShortcuts {
       case ImageSourceType.asset:
         return _ResolvedImage(type: 'asset', path: imageSource);
       case ImageSourceType.network:
-        final file = await DefaultCacheManager().getSingleFile(imageSource);
+        final cacheManager = DefaultCacheManager();
+
+        // Important for offline shortcut creation:
+        // getSingleFile() may try the network when no fresh cache entry is
+        // available. getFileFromCache() is cache-only and can reuse an older
+        // disk-cached image without any network connection.
+        final cached = await cacheManager.getFileFromCache(imageSource);
+        if (cached != null && cached.file.existsSync()) {
+          return _ResolvedImage(type: 'file', path: cached.file.path);
+        }
+
+        final file = await cacheManager.getSingleFile(imageSource);
         return _ResolvedImage(type: 'file', path: file.path);
     }
   }

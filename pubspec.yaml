@@ -1,6 +1,6 @@
 name: fl_pinned_shortcuts
 description: Android pinned home-screen shortcuts for Flutter with asset and cached-network icons.
-version: 0.1.3
+version: 0.1.4
 
 environment:
   sdk: '>=3.12.0 <4.0.0'

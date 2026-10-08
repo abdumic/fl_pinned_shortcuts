@@ -1,3 +1,10 @@
+## 0.1.4
+
+- Prefer disk-cached network images before attempting a network download.
+- Make shortcut image resolution work better when creating shortcuts offline.
+- Add `isImageCached()` for cache-only checks.
+- Add `cacheNetworkImage()` for proactively preparing network images for offline use.
+
 ## 0.1.3
 
 - Gracefully no-op on unsupported platforms such as Web, Windows, macOS, and Linux.
